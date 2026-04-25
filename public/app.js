@@ -31,8 +31,18 @@ async function fetchTable(tableName) {
     throw new Error(`Failed to load ${tableName}: ${err.error}`);
   }
   const json = await res.json();
-  dataCache[tableName] = json.data;
-  return json.data;
+  
+  // Normalize column names to lowercase (Snowflake exports UPPERCASE)
+  const normalized = json.data.map(row => {
+    const lower = {};
+    for (const key in row) {
+      lower[key.toLowerCase()] = row[key];
+    }
+    return lower;
+  });
+  
+  dataCache[tableName] = normalized;
+  return normalized;
 }
 
 // Format currency
