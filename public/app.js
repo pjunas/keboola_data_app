@@ -82,16 +82,36 @@ async function loadDailySales() {
   
   const dateRangeEl = document.getElementById('date-range');
   
+  // Find max date in data
+  const maxDateStr = data.reduce((max, r) => r.order_date > max ? r.order_date : max, '');
+  
+  // Find unique years in data, sort descending
+  const years = [...new Set(data.map(r => r.order_date.substring(0, 4)))]
+    .filter(y => y && y.length === 4)
+    .sort((a, b) => b.localeCompare(a));
+  
+  // Append year options to select
+  years.forEach(year => {
+    const opt = document.createElement('option');
+    opt.value = `year:${year}`;
+    opt.textContent = year;
+    dateRangeEl.appendChild(opt);
+  });
+  
   function render() {
     const range = dateRangeEl.value;
     let filtered = [...data].sort((a, b) => a.order_date.localeCompare(b.order_date));
     
-    if (range !== 'all') {
+    if (range.startsWith('year:')) {
+      const year = range.split(':')[1];
+      filtered = filtered.filter(r => r.order_date.startsWith(year));
+    } else if (range !== 'all') {
       const days = parseInt(range);
-      const cutoff = new Date();
+      const maxDate = new Date(maxDateStr);
+      const cutoff = new Date(maxDate);
       cutoff.setDate(cutoff.getDate() - days);
       const cutoffStr = cutoff.toISOString().split('T')[0];
-      filtered = filtered.filter(r => r.order_date >= cutoffStr);
+      filtered = filtered.filter(r => r.order_date >= cutoffStr && r.order_date <= maxDateStr);
     }
     
     // Chart
@@ -120,7 +140,7 @@ async function loadDailySales() {
     // Table
     renderTable(
       document.getElementById('daily-sales-table'),
-      filtered.slice().reverse().slice(0, 50),
+      filtered.slice().reverse().slice(0, 100),
       [
         { field: 'order_date', label: 'Date' },
         { field: 'order_count', label: 'Orders', format: formatNumber },
