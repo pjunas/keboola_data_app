@@ -1,0 +1,14 @@
+{
+  "name": "junas-ecommerce-data-app",
+  "version": "1.0.0",
+  "description": "E-commerce reporting dashboard - Keboola Data App assignment",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "csv-parse": "^5.5.0"
+  }
+}

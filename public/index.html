@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-commerce Reporting Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header>
+    <h1>E-commerce Reporting Dashboard</h1>
+    <p class="subtitle">Daily sales, products, categories, stock and customers</p>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="daily-sales">Daily Sales</button>
+    <button class="tab-btn" data-tab="revenue-product">Revenue by Product</button>
+    <button class="tab-btn" data-tab="sales-category">Sales by Category</button>
+    <button class="tab-btn" data-tab="low-stock">Low Stock Warning</button>
+    <button class="tab-btn" data-tab="customers">Customer Segments</button>
+  </nav>
+
+  <main>
+    <section id="daily-sales" class="tab-content active">
+      <h2>Daily Sales</h2>
+      <div class="filter-bar">
+        <label>Date range:
+          <select id="date-range">
+            <option value="all">All time</option>
+            <option value="30">Last 30 days</option>
+            <option value="90">Last 90 days</option>
+            <option value="365">Last year</option>
+          </select>
+        </label>
+      </div>
+      <div class="chart-container">
+        <canvas id="daily-sales-chart"></canvas>
+      </div>
+      <div class="table-container">
+        <table id="daily-sales-table"></table>
+      </div>
+    </section>
+
+    <section id="revenue-product" class="tab-content">
+      <h2>Revenue by Product</h2>
+      <div class="filter-bar">
+        <label>Top:
+          <select id="top-n">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="all">All</option>
+          </select>
+        </label>
+        <label>Sort by:
+          <select id="sort-by">
+            <option value="total_revenue">Revenue</option>
+            <option value="total_units_sold">Units sold</option>
+          </select>
+        </label>
+      </div>
+      <div class="chart-container">
+        <canvas id="revenue-product-chart"></canvas>
+      </div>
+      <div class="table-container">
+        <table id="revenue-product-table"></table>
+      </div>
+    </section>
+
+    <section id="sales-category" class="tab-content">
+      <h2>Sales by Category</h2>
+      <div class="chart-container">
+        <canvas id="sales-category-chart"></canvas>
+      </div>
+      <div class="table-container">
+        <table id="sales-category-table"></table>
+      </div>
+    </section>
+
+    <section id="low-stock" class="tab-content">
+      <h2>Low Stock Warning</h2>
+      <div class="filter-bar">
+        <label>
+          <input type="checkbox" id="show-only-warnings" checked>
+          Show only items needing reorder
+        </label>
+      </div>
+      <div class="table-container">
+        <table id="low-stock-table"></table>
+      </div>
+    </section>
+
+    <section id="customers" class="tab-content">
+      <h2>Customer Segments (New vs Returning)</h2>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Total customers</div>
+          <div class="kpi-value" id="kpi-total-customers">-</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">New (1 order)</div>
+          <div class="kpi-value" id="kpi-new"></div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Returning (2+ orders)</div>
+          <div class="kpi-value" id="kpi-returning"></div>
+        </div>
+      </div>
+      <div class="chart-container">
+        <canvas id="customers-chart"></canvas>
+      </div>
+    </section>
+  </main>
+
+  <div id="loading" class="loading hidden">Loading data...</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
