@@ -269,7 +269,7 @@ async function loadLowStock() {
         { field: 'units_in_carts', label: 'In carts', format: formatNumber },
         { field: 'current_stock', label: 'Current stock', format: formatNumber },
         { field: 'reorder_threshold', label: 'Threshold', format: formatNumber },
-        { field: 'needs_reorder', label: 'Order needed', format: v => {format: v => (v === 'true' || v === true) ? 'YES' : 'no' }
+        { field: 'needs_reorder', label: 'Reorder?', format: v => (v === 'true' || v === true) ? 'YES' : 'no' }
       ]
     );
   }
