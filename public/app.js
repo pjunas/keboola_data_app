@@ -105,15 +105,13 @@ async function loadDailySales() {
     if (range.startsWith('year:')) {
       const year = range.split(':')[1];
       filtered = filtered.filter(r => r.order_date.startsWith(year));
-    } else if (range !== 'all') {
+   } else if (range !== 'all') {
       const days = parseInt(range);
-      const maxDate = new Date(maxDateStr);
-      const cutoff = new Date(maxDate);
+      const cutoff = new Date();
       cutoff.setDate(cutoff.getDate() - days);
       const cutoffStr = cutoff.toISOString().split('T')[0];
-      filtered = filtered.filter(r => r.order_date >= cutoffStr && r.order_date <= maxDateStr);
-    }
-    
+      filtered = filtered.filter(r => r.order_date >= cutoffStr);
+} 
     // Chart
     const ctx = document.getElementById('daily-sales-chart');
     if (charts.dailySales) charts.dailySales.destroy();
@@ -140,7 +138,7 @@ async function loadDailySales() {
     // Table
     renderTable(
       document.getElementById('daily-sales-table'),
-      filtered.slice().reverse().slice(0, 100),
+      filtered.slice().reverse(),
       [
         { field: 'order_date', label: 'Date' },
         { field: 'order_count', label: 'Orders', format: formatNumber },
